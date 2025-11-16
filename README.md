@@ -373,7 +373,7 @@ This project is part of MLOps coursework - educational purposes only.
 ## 📧 Contact
 
 **Rakesh Bhattacharjee**
-- Email: rakesh.bhattacharjee24@gmail.com
+- Email: 21f3002692@ds.study.iitm.ac.in
 - GitHub: [@neutrino1729](https://github.com/neutrino1729)
 
 ---
