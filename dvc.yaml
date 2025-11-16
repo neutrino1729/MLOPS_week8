@@ -1,0 +1,50 @@
+stages:
+  poison_data:
+    cmd: python src/poison_data.py --create-all
+    deps:
+      - src/poison_data.py
+      - data/iris.csv
+    outs:
+      - data/poisoned/
+    params:
+      - poisoning.levels
+      - poisoning.random_seed
+
+  validate_clean:
+    cmd: python src/validate_labels.py --data-path data/iris.csv --poison-level 0.0
+    deps:
+      - src/validate_labels.py
+      - data/iris.csv
+    outs:
+      - reports/validation/iris_validation.json
+
+  train_models:
+    cmd: |
+      python src/train_model.py --data-path data/iris.csv --model random_forest --poison-level 0.0 --run-name clean_rf &&
+      python src/train_model.py --data-path data/poisoned/iris_poisoned_5pct.csv --model random_forest --poison-level 0.05 --run-name poison5_rf &&
+      python src/train_model.py --data-path data/poisoned/iris_poisoned_10pct.csv --model random_forest --poison-level 0.10 --run-name poison10_rf &&
+      python src/train_model.py --data-path data/poisoned/iris_poisoned_50pct.csv --model random_forest --poison-level 0.50 --run-name poison50_rf
+    deps:
+      - src/train_model.py
+      - data/iris.csv
+      - data/poisoned/
+    outs:
+      - artifacts/models/
+    params:
+      - training.models.random_forest
+
+  evaluate:
+    cmd: python src/evaluate_model.py
+    deps:
+      - src/evaluate_model.py
+      - artifacts/models/
+    outs:
+      - reports/performance/
+
+  visualize:
+    cmd: python src/visualize_results.py
+    deps:
+      - src/visualize_results.py
+      - reports/performance/
+    outs:
+      - results/plots/

@@ -1,0 +1,5 @@
+[core]
+    remote = myremote
+['remote "myremote"']
+    url = gs://mlops-course-dulcet-bastion-452612-v4-unique/dvc-storage
+    projectname = theta-index-472515-d8

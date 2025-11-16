@@ -1,0 +1,74 @@
+# IRIS Data Poisoning Pipeline Parameters
+
+# GCP Configuration
+gcp:
+  project_id: "theta-index-472515-d8"
+  bucket_name: "mlops-course-dulcet-bastion-452612-v4-unique"
+  region: "us-central1"
+
+# Data paths
+data:
+  clean_data: "data/iris.csv"
+  poisoned_dir: "data/poisoned"
+  gcs_prefix: "gs://mlops-course-dulcet-bastion-452612-v4-unique"
+
+# Poisoning configuration
+poisoning:
+  levels: [0.05, 0.10, 0.50]  # 5%, 10%, 50%
+  random_seed: 42
+  method: "label_flipping"
+
+# Model training
+training:
+  test_size: 0.2
+  random_state: 42
+  cv_folds: 5
+  models:
+    random_forest:
+      n_estimators: 100
+      max_depth: null
+      min_samples_split: 2
+      random_state: 42
+    svm:
+      C: 1.0
+      kernel: "rbf"
+      gamma: "scale"
+      random_state: 42
+    logistic_regression:
+      C: 1.0
+      max_iter: 1000
+      random_state: 42
+
+# Label validation
+validation:
+  knn:
+    k: 5
+    threshold: 0.5
+    normalize_features: true
+  confidence:
+    threshold: 0.8
+    model_type: "random_forest"
+
+# MLflow configuration
+mlflow:
+  experiment_name: "iris_poisoning_mlops"
+  tracking_uri: "gs://mlops-course-dulcet-bastion-452612-v4-unique/mlruns"
+  artifact_location: "gs://mlops-course-dulcet-bastion-452612-v4-unique/mlartifacts"
+  run_name_prefix: "iris_poison"
+
+# Visualization
+visualization:
+  figsize: [12, 8]
+  dpi: 300
+  style: "seaborn-v0_8-darkgrid"
+  save_format: "png"
+
+# Evaluation metrics
+evaluation:
+  metrics:
+    - "accuracy"
+    - "precision_macro"
+    - "recall_macro"
+    - "f1_macro"
+  generate_confusion_matrix: true
+  generate_classification_report: true

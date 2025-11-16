@@ -1,0 +1,4 @@
+MLFLOW_TRACKING_URI=./mlruns
+MLFLOW_ARTIFACT_LOCATION=gs://mlops-course-dulcet-bastion-452612-v4-unique/mlartifacts
+GCS_BUCKET=mlops-course-dulcet-bastion-452612-v4-unique
+PROJECT_ID=theta-index-472515-d8
